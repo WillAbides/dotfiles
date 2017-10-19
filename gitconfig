@@ -1,0 +1,26 @@
+[user]
+	email = willabides@github.com
+	name = Will Roden
+	signingkey = 5CA6100C
+[hub]
+protocol = https
+
+[core]
+	excludesfile = ~/.gitignore_global
+	autocrlf = input
+[push]
+	default = simple
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[github]
+	user = WillAbides
+[credential]
+	helper = osxkeychain
+[http]
+	sslVerify = false
+[alias]
+	co = checkout
+	br = branch
+	pr =  "!f(){ PR=$1; BRANCH=${2:-"pr/$PR"}; git fetch origin pull/$PR/head:$BRANCH; git checkout $BRANCH; };f"
