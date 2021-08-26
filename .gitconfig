@@ -1,26 +1,29 @@
 [user]
-	email = willabides@github.com
+	email = will@roden.cc
 	name = Will Roden
-	signingkey = 5CA6100C
 [hub]
 protocol = https
 
 [core]
-	excludesfile = ~/.gitignore_global
+	excludesfile = "~/.gitignore_global"
 	autocrlf = input
 [push]
 	default = simple
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
 	required = true
+	process = git-lfs filter-process
 [github]
 	user = WillAbides
 [credential]
-	helper = osxkeychain
+	helper = store
 [http]
-	sslVerify = false
+	sslVerify = true
+	cookiefile = "~/.gitcookies"
 [alias]
 	co = checkout
 	br = branch
 	pr =  "!f(){ PR=$1; BRANCH=${2:-"pr/$PR"}; git fetch origin pull/$PR/head:$BRANCH; git checkout $BRANCH; };f"
+[init]
+	defaultBranch = main

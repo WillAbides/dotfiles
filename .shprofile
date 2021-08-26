@@ -1,0 +1,38 @@
+#!/bin/false
+# shellcheck shell=sh
+
+# 077 would be more secure, but 022 is more useful.
+umask 022
+
+# Save more history
+export HISTSIZE=100000
+export SAVEHIST=100000
+
+# Fix systems missing $USER
+[ -z "$USER" ] && USER="$(whoami)"
+export USER
+
+CPUCOUNT=1
+MAKEFLAGS=
+if type getconf >/dev/null; then
+  CPUCOUNT=$(getconf _NPROCESSORS_ONLN)
+  MAKEFLAGS="-j$CPUCOUNT"
+fi
+export CPUCOUNT MAKEFLAGS
+
+# Load secrets
+# shellcheck source=/dev/null
+[ -f "$HOME/.secrets" ] && . "$HOME/.secrets"
+
+# Some post-secret aliases
+if [ -n "$GITHUB_TOKEN" ]; then
+  export OCTOKIT_ACCESS_TOKEN="$GITHUB_TOKEN"
+  export HUBOT_GITHUB_TOKEN="$GITHUB_TOKEN"
+fi
+
+if which rbenv >/dev/null; then
+  eval "$(rbenv init -)"
+fi
+
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$HOME/bin:$PATH"

@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+CDPATH="" cd -- "$(dirname -- "$(dirname -- "$0")")"
+
+echo "
+install.sh
+$(ls script/*)
+$(git ls-files --exclude-standard -co '.*' \
+  | grep -v .gitignore \
+  | grep -v .gitconfig
+)" | xargs script/shellcheck

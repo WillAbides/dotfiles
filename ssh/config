@@ -4,55 +4,39 @@ Host *
     UseKeychain yes
     AddKeysToAgent yes
 
-Host ghe-default
-    HostName 172.28.128.4
-    proxycommand ssh vag-enterprise nc -w 120 %h %p
-    UserKnownHostsFile /dev/null
-    StrictHostKeyChecking no
+Host bastion.githubapp.com
+  identityfile ~/.ssh/id_github
+  user willabides
+  forwardagent yes
+  controlpath ~/.ssh/ctl/%r@%h:%p
+  controlmaster auto
+  controlpersist 10m
 
-Host vag-enterprise
-    HostName 127.0.0.1
-    User vagrant
-    Port 2299
-    UserKnownHostsFile /dev/null
-    StrictHostKeyChecking no
-    PasswordAuthentication no
-    IdentityFile "/Users/wroden/.vagrant.d/boxes/http:-VAGRANTSLASH--VAGRANTSLASH-github-enterprise.s3.amazonaws.com-VAGRANTSLASH-boxes-VAGRANTSLASH-debiancontrib-jessie64-kernel-4.4.box/0/virtualbox/vagrant_private_key"
-    IdentitiesOnly yes
-    LogLevel FATAL
-    ForwardAgent yes
-
-Host 172.28.128.*
-    User admin
-    StrictHostKeyChecking no
-    UserKnownHostsFile=/dev/null
-    LogLevel ERROR
-    IdentityFile ~/github/enterprise2/id_test
-    Port 122
-
-Host remmy
-    identityfile /Users/wroden/github/ssh/id_rsa
+Host *.cp1-iad.github.net
+    ControlMaster auto
+    ControlPath ~/.ssh/%r@%h:%p
+    identityfile ~/.ssh/id_github
     user willabides
     forwardagent yes
-    controlpath ~/.ssh/ctl/%r@%h:%p
-    hostname 172.16.19.74
-    controlmaster auto
-    controlpersist 10m
-
-Host remote.github.net
-    identityfile /Users/wroden/github/ssh/id_github
-    user willabides
-    forwardagent yes
+    ProxyJump bastion.githubapp.com
+    # proxycommand ssh bastion.githubapp.com nc -w 120 %h %p
 
 Host *.iad.github.net
     ControlMaster auto
     ControlPath ~/.ssh/%r@%h:%p
-    identityfile /Users/wroden/github/ssh/id_github
+    identityfile ~/.ssh/id_github
     user willabides
     forwardagent yes
-    # proxycommand ssh remmy nc -w 120 %h %p
+    proxycommand ssh bastion.githubapp.com nc -w 120 %h %p
 
 Host github.com *.github.com *.github.net *.githubapp.com
-    identityfile /Users/wroden/github/ssh/id_github
+    identityfile ~/.ssh/id_github
     user willabides
     forwardagent yes
+
+Host *.ghaedev.com
+  User willabides
+  Port 122
+  User willabides
+  ForwardAgent yes
+  IdentityFile ~/.ssh/id_rsa
