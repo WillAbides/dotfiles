@@ -6,6 +6,7 @@ CDPATH="" cd -- "$(dirname -- "$(dirname -- "$0")")"
 
 echo "
 install.sh
+download.sh
 $(ls script/*)
 $(git ls-files --exclude-standard -co '.*' \
   | grep -v .gitignore \
