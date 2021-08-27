@@ -30,6 +30,11 @@ __set_prompt_command() {
 
     ps1() {
         local last_result=$?
+        # $? isn't available when using iterm2_shell_integration.bash.
+        # Use $__bp_last_ret_value instead.
+        if [ -n "$__bp_last_ret_value" ]; then
+          last_result=$__bp_last_ret_value
+        fi
         PS1="$COLOR_CWD\w$RESET"
         if [ -n "$SSH_CLIENT" ]; then
           PS1="$COLOR_HOST\u@\H $COLOR_CWD\w$RESET"
@@ -50,7 +55,7 @@ __set_prompt_command() {
             (( VCS_STATUS_COMMITS_AHEAD )) && PS1="$PS1 $SYMBOL_GIT_PUSH${VCS_STATUS_COMMITS_AHEAD}"     
             PS1="$PS1$RESET"
         fi
-        if [ $last_result -eq 0 ]; then
+        if [ "$last_result" -eq 0 ]; then
             PS1="$PS1$COLOR_SUCCESS $PS_SYMBOL $RESET"
         else
             PS1="$PS1$COLOR_FAILURE $PS_SYMBOL $RESET"
