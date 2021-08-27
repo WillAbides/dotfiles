@@ -10,14 +10,14 @@ prompt work.
 1. Download/clone this repo to "~/dotfiles"
 2. Run `~/dotfiles/install.sh`
 
-### With curl
+### With curl and tar
 
 ```shell
 sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/dotfiles/main/download.sh)" \
 && ~/dotfiles/install.sh
 ```
 
-### With wget
+### With wget and tar
 
 ```shell
 sh -c "$(wget -O - https://raw.githubusercontent.com/WillAbides/dotfiles/main/download.sh)" \
@@ -27,7 +27,11 @@ sh -c "$(wget -O - https://raw.githubusercontent.com/WillAbides/dotfiles/main/do
 ### With git
 
 ```shell
-cd ~ \
+start_dir="$(pwd)" \
+&& cd ~ \
 && git clone https://github.com/WillAbides/dotfiles.git \
-&& ./dotfiles/install.sh
+&& cd dotfiles \
+&& git remote set-url --push origin git@github.com:WillAbides/dotfiles.git \
+&& ./dotfiles/install.sh \
+&& cd "$start_dir"
 ```
