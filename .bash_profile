@@ -37,9 +37,6 @@ if type brew &>/dev/null; then
   [ -f "$(brew --prefix)/etc/bash_completion" ] && source "$(brew --prefix)/etc/bash_completion" >/dev/null
 fi
 
-# shellcheck source=.gitstatus-enhanced
-source ~/.gitstatus-enhanced
-
 # List directory contents
 alias sl=ls
 alias ls='ls -G'
@@ -56,6 +53,9 @@ for self_complete in bindown octo; do
     complete -C "$(which "$self_complete")" "$self_complete"
   fi
 done
+
+# shellcheck source=.gitstatus-enhanced
+source ~/.gitstatus-enhanced
 
 # shellcheck source=/dev/null
 source ~/.dotfiles/iterm2_shell_integration.bash

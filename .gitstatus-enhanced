@@ -5,21 +5,9 @@
 source "$HOME/.dotfiles/gitstatus/gitstatus.plugin.sh"
 
 # Start gitstatusd in the background.
-gitstatus_stop && gitstatus_start
+gitstatus_stop && gitstatus_start -s -1 -u -1 -c -1 -d -1
 
-__set_prompt_command() {
-    readonly RESET='\[\033[m\]'
-    readonly COLOR_CWD='\[\033[0;34m\]'     # blue
-    readonly COLOR_GIT='\[\033[0;36m\]'     # cyan
-    readonly COLOR_SUCCESS='\[\033[0;32m\]' # green
-    readonly COLOR_HOST='\[\033[0;31m\]'    # red
-    readonly COLOR_FAILURE='\[\033[0;31m\]' # red
-
-    readonly SYMBOL_GIT_BRANCH='⑂'
-    readonly SYMBOL_GIT_MODIFIED='*'
-    readonly SYMBOL_GIT_PUSH='↑'
-    readonly SYMBOL_GIT_PULL='↓'
-
+ps1() {
     if [[ -z "$PS_SYMBOL" ]]; then
         case "$(uname)" in
             Darwin)   PS_SYMBOL='';;
@@ -27,42 +15,49 @@ __set_prompt_command() {
             *)        PS_SYMBOL='%';;
         esac
     fi
+    local RESET='\[\033[m\]'
+    local COLOR_CWD='\[\033[0;34m\]'     # blue
+    local COLOR_GIT='\[\033[0;36m\]'     # cyan
+    local COLOR_SUCCESS='\[\033[0;32m\]' # green
+    local COLOR_HOST='\[\033[0;31m\]'    # red
+    local COLOR_FAILURE='\[\033[0;31m\]' # red
 
-    ps1() {
-        local last_result=$?
-        # $? isn't available when using iterm2_shell_integration.bash.
-        # Use $__bp_last_ret_value instead.
-        if [ -n "$__bp_last_ret_value" ]; then
-          last_result=$__bp_last_ret_value
-        fi
-        PS1="$COLOR_CWD\w$RESET"
-        if [ -n "$SSH_CLIENT" ]; then
-          PS1="$COLOR_HOST\u@\H $COLOR_CWD\w$RESET"
-        fi
-        gitstatus_query || true
-        if [ "$VCS_STATUS_RESULT" = "ok-sync" ]; then
-            PS1="$PS1$COLOR_GIT"
-            if [[ -n "$VCS_STATUS_LOCAL_BRANCH" ]]; then
-                PS1="$PS1 $SYMBOL_GIT_BRANCH$VCS_STATUS_LOCAL_BRANCH"
-            elif [[ -n "$VCS_STATUS_TAG" ]]; then
-                PS1="$PS1 $VCS_STATUS_TAG"
-            else
-                PS1="$PS1 ${VCS_STATUS_COMMIT:0:8}"
-            fi
-            (( VCS_STATUS_NUM_CONFLICTED + VCS_STATUS_NUM_STAGED + VCS_STATUS_NUM_UNSTAGED + VCS_STATUS_NUM_UNTRACKED )) && \
-                PS1="$PS1$SYMBOL_GIT_MODIFIED"
-            (( VCS_STATUS_COMMITS_BEHIND )) && PS1="$PS1 $SYMBOL_GIT_PULL${VCS_STATUS_COMMITS_BEHIND}"
-            (( VCS_STATUS_COMMITS_AHEAD )) && PS1="$PS1 $SYMBOL_GIT_PUSH${VCS_STATUS_COMMITS_AHEAD}"     
-            PS1="$PS1$RESET"
-        fi
-        if [ "$last_result" -eq 0 ]; then
-            PS1="$PS1$COLOR_SUCCESS $PS_SYMBOL $RESET"
+    local SYMBOL_GIT_BRANCH='⑂'
+    local SYMBOL_GIT_MODIFIED='*'
+    local SYMBOL_GIT_PUSH='↑'
+    local SYMBOL_GIT_PULL='↓'
+
+    local last_result=$?
+    # $? isn't available when using iterm2_shell_integration.bash.
+    # Use $__bp_last_ret_value instead.
+    if [ -n "$__bp_last_ret_value" ]; then
+      last_result=$__bp_last_ret_value
+    fi
+    PS1="$COLOR_CWD\w$RESET"
+    if [ -n "$SSH_CLIENT" ]; then
+      PS1="$COLOR_HOST\u@\H $COLOR_CWD\w$RESET"
+    fi
+    gitstatus_query || true
+    if [ "$VCS_STATUS_RESULT" = "ok-sync" ]; then
+        PS1="$PS1$COLOR_GIT"
+        if [[ -n "$VCS_STATUS_LOCAL_BRANCH" ]]; then
+            PS1="$PS1 $SYMBOL_GIT_BRANCH$VCS_STATUS_LOCAL_BRANCH"
+        elif [[ -n "$VCS_STATUS_TAG" ]]; then
+            PS1="$PS1 $VCS_STATUS_TAG"
         else
-            PS1="$PS1$COLOR_FAILURE $PS_SYMBOL $RESET"
+            PS1="$PS1 ${VCS_STATUS_COMMIT:0:8}"
         fi
-    }
-    PROMPT_COMMAND="ps1${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+        (( VCS_STATUS_NUM_CONFLICTED + VCS_STATUS_NUM_STAGED + VCS_STATUS_NUM_UNSTAGED + VCS_STATUS_NUM_UNTRACKED )) && \
+            PS1="$PS1$SYMBOL_GIT_MODIFIED"
+        (( VCS_STATUS_COMMITS_BEHIND )) && PS1="$PS1 $SYMBOL_GIT_PULL${VCS_STATUS_COMMITS_BEHIND}"
+        (( VCS_STATUS_COMMITS_AHEAD )) && PS1="$PS1 $SYMBOL_GIT_PUSH${VCS_STATUS_COMMITS_AHEAD}"
+        PS1="$PS1$RESET"
+    fi
+    if [ "$last_result" -eq 0 ]; then
+        PS1="$PS1$COLOR_SUCCESS $PS_SYMBOL $RESET"
+    else
+        PS1="$PS1$COLOR_FAILURE $PS_SYMBOL $RESET"
+    fi
 }
 
-__set_prompt_command
-unset __set_prompt_command
+PROMPT_COMMAND="ps1${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
