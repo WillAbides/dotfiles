@@ -37,7 +37,7 @@ download_and_extract() {
 }
 
 if [ -e "$TARGET" ]; then
-  >&2 echo "$(pwd)/$TARGET already exists."
+  >&2 echo "$TARGET already exists."
   exit 1
 fi
 
