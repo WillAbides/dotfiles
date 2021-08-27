@@ -32,6 +32,6 @@ start_dir="$(pwd)" \
 && git clone https://github.com/WillAbides/dotfiles.git \
 && cd dotfiles \
 && git remote set-url --push origin git@github.com:WillAbides/dotfiles.git \
-&& ./dotfiles/install.sh \
+&& ./install.sh \
 && cd "$start_dir"
 ```
