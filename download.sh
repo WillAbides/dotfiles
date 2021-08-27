@@ -8,6 +8,7 @@ set -e
 tarball_url="https://github.com/WillAbides/dotfiles/archive/refs/heads/main.tar.gz"
 tarball_name="dotfiles.tar.gz"
 git_url="https://github.com/WillAbides/dotfiles.git"
+git_push_url="git@github.com:WillAbides/dotfiles.git"
 
 TARGET="${TARGET:-"$HOME/dotfiles"}"
 
@@ -47,7 +48,9 @@ mkdir -p "$target_parent"
 
 if type git >/dev/null 2>&1; then
     cd "$target_parent"
-    git clone "$git_url"
+    git clone "$git_url" "$TARGET"
+    cd "$TARGET"
+    git remote set-url --push origin "$git_push_url"
 else
   download_and_extract
 fi
