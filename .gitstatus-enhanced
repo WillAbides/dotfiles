@@ -15,17 +15,17 @@ ps1() {
             *)        PS_SYMBOL='%';;
         esac
     fi
-    local RESET='\[\033[m\]'
-    local COLOR_CWD='\[\033[0;34m\]'     # blue
-    local COLOR_GIT='\[\033[0;36m\]'     # cyan
-    local COLOR_SUCCESS='\[\033[0;32m\]' # green
-    local COLOR_HOST='\[\033[0;31m\]'    # red
-    local COLOR_FAILURE='\[\033[0;31m\]' # red
+    local reset='\[\033[m\]'
+    local color_cwd='\[\033[0;34m\]'     # blue
+    local color_git='\[\033[0;36m\]'     # cyan
+    local color_success='\[\033[0;32m\]' # green
+    local color_host='\[\033[0;31m\]'    # red
+    local color_failure='\[\033[0;31m\]' # red
 
-    local SYMBOL_GIT_BRANCH='⑂'
-    local SYMBOL_GIT_MODIFIED='*'
-    local SYMBOL_GIT_PUSH='↑'
-    local SYMBOL_GIT_PULL='↓'
+    local symbol_git_branch='⑂'
+    local symbol_git_modified='*'
+    local symbol_git_push='↑'
+    local symbol_git_pull='↓'
 
     local last_result=$?
     # $? isn't available when using iterm2_shell_integration.bash.
@@ -33,30 +33,30 @@ ps1() {
     if [ -n "$__bp_last_ret_value" ]; then
       last_result=$__bp_last_ret_value
     fi
-    PS1="$COLOR_CWD\w$RESET"
+    PS1="$color_cwd\w$reset"
     if [ -n "$SSH_CLIENT" ]; then
-      PS1="$COLOR_HOST\u@\H $COLOR_CWD\w$RESET"
+      PS1="$color_host\u@\H $color_cwd\w$reset"
     fi
     gitstatus_query || true
     if [ "$VCS_STATUS_RESULT" = "ok-sync" ]; then
-        PS1="$PS1$COLOR_GIT"
+        PS1="$PS1$color_git"
         if [[ -n "$VCS_STATUS_LOCAL_BRANCH" ]]; then
-            PS1="$PS1 $SYMBOL_GIT_BRANCH$VCS_STATUS_LOCAL_BRANCH"
+            PS1="$PS1 $symbol_git_branch$VCS_STATUS_LOCAL_BRANCH"
         elif [[ -n "$VCS_STATUS_TAG" ]]; then
             PS1="$PS1 $VCS_STATUS_TAG"
         else
             PS1="$PS1 ${VCS_STATUS_COMMIT:0:8}"
         fi
         (( VCS_STATUS_NUM_CONFLICTED + VCS_STATUS_NUM_STAGED + VCS_STATUS_NUM_UNSTAGED + VCS_STATUS_NUM_UNTRACKED )) && \
-            PS1="$PS1$SYMBOL_GIT_MODIFIED"
-        (( VCS_STATUS_COMMITS_BEHIND )) && PS1="$PS1 $SYMBOL_GIT_PULL${VCS_STATUS_COMMITS_BEHIND}"
-        (( VCS_STATUS_COMMITS_AHEAD )) && PS1="$PS1 $SYMBOL_GIT_PUSH${VCS_STATUS_COMMITS_AHEAD}"
-        PS1="$PS1$RESET"
+            PS1="$PS1$symbol_git_modified"
+        (( VCS_STATUS_COMMITS_BEHIND )) && PS1="$PS1 $symbol_git_pull${VCS_STATUS_COMMITS_BEHIND}"
+        (( VCS_STATUS_COMMITS_AHEAD )) && PS1="$PS1 $symbol_git_push${VCS_STATUS_COMMITS_AHEAD}"
+        PS1="$PS1$reset"
     fi
     if [ "$last_result" -eq 0 ]; then
-        PS1="$PS1$COLOR_SUCCESS $PS_SYMBOL $RESET"
+        PS1="$PS1$color_success $PS_SYMBOL $reset"
     else
-        PS1="$PS1$COLOR_FAILURE $PS_SYMBOL $RESET"
+        PS1="$PS1$color_failure $PS_SYMBOL $reset"
     fi
 }
 
