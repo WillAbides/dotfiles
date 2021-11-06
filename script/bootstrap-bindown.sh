@@ -1,15 +1,17 @@
 #!/bin/sh
 set -e
 
-TAG="v3.4.2"
+TAG="v3.5.1"
 
 CHECKSUMS="$(cat <<EOT
-089b314175f708d54df263af6056fce2bfb783a6b2d075ba9ad431c4e4bca224  bindown_3.4.2_darwin_amd64.tar.gz
-159cfb35efb90a7ad0324451deb60d330ce2e562cdc16befb6f2329450f7d935  bindown_3.4.2_windows_amd64.tar.gz
-6792c06e360f916a810e3c29124ac88547d15ece9e03ae83e0e55be15634860c  bindown_3.4.2_windows_386.tar.gz
-8554c2f65803bfa1147d30913354a5dc6f8ccda16e3183c254fd3a36d92b65f3  bindown_3.4.2_linux_amd64.tar.gz
-a556e9180d94abda1d5859c0b7a2c170e0e116bcc56c52c91eb1c60889ec50ca  bindown_3.4.2_linux_386.tar.gz
-c63346613de106cdf9c8178a05f187ab994fc39f3f5f69b0657f9c4394df63ab  bindown_3.4.2_linux_arm64.tar.gz
+123d111e4c2972162ab81f910b7e29b2ec5c8ae5c81b674fa8d3df861e90d1d7  bindown_3.5.1_linux_arm64.tar.gz
+1785f560bfb1f28c3868c3e1ab5ffd7e238adcdcb98a29a66db6fd28263632b4  bindown_3.5.1_windows_386.tar.gz
+7bd1c01649e6f9a4d9a1725bcda40bd168e8cc2de83aeec1841a0fb1eda46c5b  bindown_3.5.1_darwin_amd64.tar.gz
+8df8bdacd174029cfe137a0fc0b77eb883dfd8dae3041e71558cc37b7e345360  bindown_3.5.1_windows_amd64.tar.gz
+9e71282eaaf85ecd7de9517f4c3590b5b134b59a4e476fa51bb206497b22d433  bindown_3.5.1_linux_amd64.tar.gz
+ad771469b0dc09fd2f2217bd1208bc58ee1cbe2bc11b99ef0d87ce4aff42db61  bindown_3.5.1_windows_arm64.tar.gz
+b9ac4ce6b1a2ef2ca9ab12ad5245ff84ec2d0dd8ccbe524c34ef590a11faf81f  bindown_3.5.1_linux_386.tar.gz
+d69e6ac6e540f403efc5caa3bebc902f8f1e67c2625958714cc937a667093c08  bindown_3.5.1_darwin_arm64.tar.gz
 EOT
 )"
 
