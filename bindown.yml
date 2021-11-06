@@ -1,5 +1,6 @@
 systems:
 - darwin/amd64
+- darwin/arm64
 - linux/amd64
 dependencies:
   direnv:
@@ -17,10 +18,19 @@ dependencies:
 templates:
   direnv:
     url: https://github.com/direnv/direnv/releases/download/v{{.version}}/direnv.{{.os}}-{{.arch}}
+    archive_path: direnv.{{.os}}-{{.arch}}
+    bin: direnv
     required_vars:
     - version
-    bin: direnv
-    archive_path: direnv.{{.os}}-{{.arch}}
+    overrides:
+    - matcher:
+        os:
+        - darwin
+        arch:
+        - arm64
+      dependency:
+        vars:
+          arch: amd64
   gitstatus:
     url: https://github.com/romkatv/gitstatus/archive/refs/tags/v{{.version}}.tar.gz
     archive_path: gitstatus-{{.version}}
@@ -40,11 +50,20 @@ templates:
       dependency:
         url: https://github.com/koalaman/shellcheck/releases/download/v{{.version}}/shellcheck-v{{.version}}.zip
         archive_path: shellcheck-v{{.version}}.exe
+    - matcher:
+        os:
+        - darwin
+        arch:
+        - arm64
+      dependency:
+        vars:
+          arch: amd64
     substitutions:
       arch:
         amd64: x86_64
     systems:
     - darwin/amd64
+    - darwin/arm64
     - linux/amd64
     - windows/amd64
 template_sources:
