@@ -37,8 +37,8 @@ fi
 export GOPATH="$HOME/go"
 PATH="$GOPATH/bin:$HOME/bin:$PATH"
 
-if type brew &>/dev/null; then
-  PATH="$(brew --prefix)/bin:$PATH"
+if [ -f "/opt/homebrew/bin/brew" ]; then
+  PATH="$(/opt/homebrew/bin/brew --prefix)/bin:$PATH"
 fi
 
 export PATH
