@@ -35,4 +35,10 @@ if which rbenv >/dev/null; then
 fi
 
 export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$HOME/bin:$PATH"
+PATH="$GOPATH/bin:$HOME/bin:$PATH"
+
+if type brew &>/dev/null; then
+  PATH="$(brew --prefix)/bin:$PATH"
+fi
+
+export PATH
