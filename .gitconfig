@@ -16,8 +16,8 @@ protocol = https
 	process = git-lfs filter-process
 [github]
 	user = WillAbides
-[credential]
-	helper = store
+; [credential]
+; 	helper = store
 [http]
 	sslVerify = true
 	cookiefile = "~/.gitcookies"
@@ -25,5 +25,8 @@ protocol = https
 	co = checkout
 	br = branch
 	pr =  "!f(){ PR=$1; BRANCH=${2:-"pr/$PR"}; git fetch origin pull/$PR/head:$BRANCH; git checkout $BRANCH; };f"
+	recent-branches = branch --sort=-committerdate
 [init]
 	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = https://github.com/
