@@ -27,4 +27,5 @@ eval "$(direnv hook bash)"
 # Created by `pipx` on 2025-02-23 00:41:46
 # export PATH="$PATH:/Users/will.roden/.local/bin"
 
+export STARSHIP_CONFIG="$HOME/dotfiles/starship.toml"
 eval "$(starship init bash)"

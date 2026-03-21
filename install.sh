@@ -28,6 +28,7 @@ mkdir -p "$HOME/go/bin"
 
 script/bindown install gitstatus --output ./gitstatus
 script/bindown install direnv --output "$HOME/bin/direnv"
+script/bindown install starship --output "$HOME/bin/starship"
 
 files_to_link='
 .shprofile
