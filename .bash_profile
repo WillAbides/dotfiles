@@ -37,6 +37,8 @@ if type brew &>/dev/null; then
   [ -f "$(brew --prefix)/etc/bash_completion" ] && source "$(brew --prefix)/etc/bash_completion" >/dev/null
 fi
 
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
 # List directory contents
 alias sl=ls
 alias ls='ls -G'
@@ -54,22 +56,7 @@ for self_complete in bindown octo; do
   fi
 done
 
-# shellcheck source=.iterm2_shell_integration.bash
-# source ~/.dotfiles/iterm2_shell_integration.bash
-
-# shellcheck source=.gitstatus-enhanced
-# source ~/.gitstatus-enhanced
-
-# shellcheck source=/dev/null
-
-# source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-# source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-# chruby 3.4.1
-
 . "$HOME/.cargo/env"
-
-# Created by `pipx` on 2025-02-23 00:41:46
-# export PATH="$PATH:/Users/will.roden/.local/bin"
 
 export STARSHIP_CONFIG="$HOME/dotfiles/starship.toml"
 eval "$(starship init bash)"

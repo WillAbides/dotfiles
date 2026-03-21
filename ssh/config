@@ -1,7 +1,6 @@
 Host *
     serveraliveinterval 30
     UseRoaming no
-    UseKeychain yes
     AddKeysToAgent yes
 
 Host bastion.githubapp.com

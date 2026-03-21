@@ -16,16 +16,7 @@ export HISTIGNORE="&:ls:[bf]g:exit"
 
 eval "$(direnv hook bash)"
 
-# Generated for envman. Do not edit.
-#[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
-
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# . "$HOME/.cargo/env"
-
-# Created by `pipx` on 2025-02-23 00:41:46
-# export PATH="$PATH:/Users/will.roden/.local/bin"
+export PATH="$HOME/.local/bin:$PATH"
 
 export STARSHIP_CONFIG="$HOME/dotfiles/starship.toml"
 eval "$(starship init bash)"

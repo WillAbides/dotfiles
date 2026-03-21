@@ -7,3 +7,4 @@
 .zed/
 settings.local.json
 /.local
+.llmsandbox/
