@@ -5,7 +5,8 @@
 
 set -e
 
-tarball_url="https://github.com/WillAbides/dotfiles/archive/refs/heads/main.tar.gz"
+DOTFILES_REF="${DOTFILES_COMMIT:-refs/heads/main}"
+tarball_url="https://github.com/WillAbides/dotfiles/archive/$DOTFILES_REF.tar.gz"
 tarball_name="dotfiles.tar.gz"
 git_url="https://github.com/WillAbides/dotfiles.git"
 git_push_url="git@github.com:WillAbides/dotfiles.git"
@@ -50,7 +51,12 @@ target_parent="$(dirname "$TARGET")"
 
 mkdir -p "$target_parent"
 
-if type git >/dev/null 2>&1; then
+use_git=""
+if [ "${DOTFILES_USE_TARBALL-}" != "1" ] && type git >/dev/null 2>&1; then
+  use_git=1
+fi
+
+if [ -n "$use_git" ]; then
   cd "$target_parent"
   git clone "$git_url" "$TARGET"
   cd "$TARGET"

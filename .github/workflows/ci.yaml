@@ -1,14 +1,48 @@
 name: ci
 on: [push, workflow_dispatch]
 jobs:
-  install:
+  install-git:
     runs-on: ubuntu-latest
     env:
       DOTFILES_COMMIT: ${{ github.sha }}
+      SSH_CLIENT: "ci"
     steps:
       - name: download and install
         run: |
           export DOTFILES_COMMIT
+          sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/dotfiles/$DOTFILES_COMMIT/download.sh)" \
+          && cd ~/dotfiles \
+          && ./install.sh
+      - name: verify environment
+        shell: bash
+        run: |
+          source ~/.bash_profile
+
+          # Symlinks point to the right place
+          [ -L ~/.dotfiles ] && [ "$(readlink ~/.dotfiles)" = "$HOME/dotfiles" ]
+          [ -L ~/.shprofile ]
+          [ -L ~/.bashrc ]
+          [ -L ~/.bash_profile ]
+          [ -L ~/.gitconfig ]
+          [ -L ~/.gitignore_global ]
+
+          # Key environment variables
+          [ "$GOPATH" = "$HOME/go" ]
+          echo "$PATH" | grep -q "$HOME/bin"
+
+          # Installed tools work
+          direnv version
+          starship --version
+  install-tarball:
+    runs-on: ubuntu-latest
+    env:
+      DOTFILES_COMMIT: ${{ github.sha }}
+      SSH_CLIENT: "ci"
+    steps:
+      - name: download and install via tarball
+        run: |
+          export DOTFILES_COMMIT
+          export DOTFILES_USE_TARBALL=1
           sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/dotfiles/$DOTFILES_COMMIT/download.sh)" \
           && cd ~/dotfiles \
           && ./install.sh
