@@ -26,7 +26,6 @@ fi
 mkdir -p "$HOME/bin"
 mkdir -p "$HOME/go/bin"
 
-script/bindown install gitstatus --output ./gitstatus
 script/bindown install direnv --output "$HOME/bin/direnv"
 script/bindown install starship --output "$HOME/bin/starship"
 
@@ -36,7 +35,6 @@ files_to_link='
 .bash_profile
 .gitconfig
 .gitignore_global
-.gitstatus-enhanced
 '
 
 for file_to_link in $files_to_link; do
