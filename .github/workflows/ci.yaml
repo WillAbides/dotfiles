@@ -12,6 +12,26 @@ jobs:
           sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/dotfiles/$DOTFILES_COMMIT/download.sh)" \
           && cd ~/dotfiles \
           && ./install.sh
+      - name: verify environment
+        shell: bash
+        run: |
+          source ~/.bash_profile
+
+          # Symlinks point to the right place
+          [ -L ~/.dotfiles ] && [ "$(readlink ~/.dotfiles)" = "$HOME/dotfiles" ]
+          [ -L ~/.shprofile ]
+          [ -L ~/.bashrc ]
+          [ -L ~/.bash_profile ]
+          [ -L ~/.gitconfig ]
+          [ -L ~/.gitignore_global ]
+
+          # Key environment variables
+          [ "$GOPATH" = "$HOME/go" ]
+          echo "$PATH" | grep -q "$HOME/bin"
+
+          # Installed tools work
+          direnv version
+          starship --version
   lint:
     runs-on: ubuntu-latest
     steps:
