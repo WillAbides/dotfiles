@@ -1,7 +1,0 @@
-#!/bin/bash
-
-set -e
-
-git rev-parse --is-inside-work-tree > /dev/null 2>&1 || exit 1
-
-test -n "$(git status --porcelain)"

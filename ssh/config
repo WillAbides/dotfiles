@@ -1,6 +1,5 @@
 Host *
     serveraliveinterval 30
-    UseRoaming no
     AddKeysToAgent yes
 
 Host bastion.githubapp.com
@@ -36,6 +35,5 @@ Host github.com *.github.com *.github.net *.githubapp.com
 Host *.ghaedev.com
   User willabides
   Port 122
-  User willabides
   ForwardAgent yes
   IdentityFile ~/.ssh/id_rsa

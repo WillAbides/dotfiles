@@ -13,4 +13,6 @@ $(
     grep -v .gitignore |
     grep -v .gitconfig |
     grep -v .github/
-)" | xargs script/shellcheck
+)" | xargs script/shfmt \
+  --write \
+  --indent 2

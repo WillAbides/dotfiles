@@ -1,12 +1,8 @@
 #!/bin/false
 # shellcheck shell=bash
 
-# check if this is a login shell
-[ "$0" = "-bash" ] && export LOGIN_BASH="1"
-
-# run bash_profile if this is not a login shell
-# shellcheck source=.bash_profile
-[ -z "$LOGIN_BASH" ] && source ~/.bash_profile
+# If not interactive, do nothing
+[[ $- != *i* ]] && return
 
 # History
 export HISTFILE=~/.bash_history
@@ -14,9 +10,20 @@ export HISTCONTROL=ignoredups
 export PROMPT_COMMAND='history -a'
 export HISTIGNORE="&:ls:[bf]g:exit"
 
+# Aliases
+alias sl=ls
+alias ls='ls -G'
+alias la='ls -AF'
+alias ll='ls -al'
+alias l='ls -a'
+alias l1='ls -1'
+alias lh='ll -htr'
+
+# direnv
 eval "$(direnv hook bash)"
 
-export PATH="$HOME/.local/bin:$PATH"
-
-export STARSHIP_CONFIG="$HOME/dotfiles/starship.toml"
+# Starship prompt
+export STARSHIP_CONFIG="$HOME/.dotfiles/starship.toml"
 eval "$(starship init bash)"
+
+export PATH="$HOME/.local/bin:$PATH"

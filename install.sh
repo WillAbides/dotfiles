@@ -10,7 +10,7 @@ needs_dotfiles_link() {
     return 0
   fi
   if [ -L "$HOME/.dotfiles" ]; then
-    target="$(cd "$(readlink "$HOME/.dotfiles" || "")" && pwd -P)"
+    target="$(cd "$(readlink "$HOME/.dotfiles" || true)" && pwd -P)"
     if [ "$target" = "$DOTFILESDIR" ]; then
       return 1
     fi
@@ -26,7 +26,6 @@ fi
 mkdir -p "$HOME/bin"
 mkdir -p "$HOME/go/bin"
 
-script/bindown install gitstatus --output ./gitstatus
 script/bindown install direnv --output "$HOME/bin/direnv"
 script/bindown install starship --output "$HOME/bin/starship"
 
@@ -36,7 +35,6 @@ files_to_link='
 .bash_profile
 .gitconfig
 .gitignore_global
-.gitstatus-enhanced
 '
 
 for file_to_link in $files_to_link; do
@@ -46,6 +44,10 @@ done
 
 # only set up .ssh if we aren't in an ssh session
 if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
+  if [ -d "$HOME/.ssh" ] && [ ! -L "$HOME/.ssh" ]; then
+    echo "$HOME/.ssh is a directory, not a symlink. Please remove it and try again." 1>&2
+    exit 1
+  fi
   rm -f "$HOME/.ssh"
   ln -s "$HOME/.dotfiles/ssh" "$HOME/.ssh"
   mkdir -p ~/.ssh/ctl
