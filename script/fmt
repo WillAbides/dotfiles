@@ -11,7 +11,8 @@ $(printf '%s\n' script/*)
 $(
   git ls-files --exclude-standard -co '.*' |
     grep -v .gitignore |
-    grep -v .gitconfig
+    grep -v .gitconfig |
+    grep -v .github/
 )" | xargs script/shfmt \
   --write \
   --indent 2

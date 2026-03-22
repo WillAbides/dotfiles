@@ -54,6 +54,9 @@ if type git >/dev/null 2>&1; then
   cd "$target_parent"
   git clone "$git_url" "$TARGET"
   cd "$TARGET"
+  if [ -n "${DOTFILES_COMMIT-}" ]; then
+    git checkout "$DOTFILES_COMMIT"
+  fi
   git remote set-url --push origin "$git_push_url"
 else
   download_and_extract

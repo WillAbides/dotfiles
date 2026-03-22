@@ -1,0 +1,26 @@
+name: ci
+on: [push, workflow_dispatch]
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    env:
+      DOTFILES_COMMIT: ${{ github.sha }}
+    steps:
+      - name: download and install
+        run: |
+          export DOTFILES_COMMIT
+          sh -c "$(curl -L https://raw.githubusercontent.com/WillAbides/dotfiles/$DOTFILES_COMMIT/download.sh)" \
+          && cd ~/dotfiles \
+          && ./install.sh
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: script/lint
+      - run: |
+          script/fmt
+          if [[ -n $(git status --porcelain) ]]; then
+              echo "Code is not formatted. Please run 'script/fmt' and commit the changes."
+              git --no-pager diff
+              exit 1
+          fi
