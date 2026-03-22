@@ -12,4 +12,6 @@ $(
   git ls-files --exclude-standard -co '.*' |
     grep -v .gitignore |
     grep -v .gitconfig
-)" | xargs script/shellcheck
+)" | xargs script/shfmt \
+  --write \
+  --indent 2

@@ -47,10 +47,10 @@ target_parent="$(dirname "$TARGET")"
 mkdir -p "$target_parent"
 
 if type git >/dev/null 2>&1; then
-    cd "$target_parent"
-    git clone "$git_url" "$TARGET"
-    cd "$TARGET"
-    git remote set-url --push origin "$git_push_url"
+  cd "$target_parent"
+  git clone "$git_url" "$TARGET"
+  cd "$TARGET"
+  git remote set-url --push origin "$git_push_url"
 else
   download_and_extract
 fi

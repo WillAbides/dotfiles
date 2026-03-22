@@ -10,7 +10,7 @@ needs_dotfiles_link() {
     return 0
   fi
   if [ -L "$HOME/.dotfiles" ]; then
-    target="$(cd "$(readlink "$HOME/.dotfiles" || "")" && pwd -P)"
+    target="$(cd "$(readlink "$HOME/.dotfiles" || true)" && pwd -P)"
     if [ "$target" = "$DOTFILESDIR" ]; then
       return 1
     fi
