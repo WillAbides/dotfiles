@@ -32,8 +32,12 @@ download_tarball() {
 download_and_extract() {
   mkdir -p "$TARGET"
   cd "$TARGET"
-  download_tarball
-  tar -xzf "$tarball_name" --strip-components=1
+  if ! download_tarball || ! tar -xzf "$tarball_name" --strip-components=1; then
+    rm -f "$tarball_name"
+    cd ..
+    rmdir "$TARGET" 2>/dev/null
+    exit 1
+  fi
   rm "$tarball_name"
 }
 

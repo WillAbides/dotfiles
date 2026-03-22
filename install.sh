@@ -44,6 +44,10 @@ done
 
 # only set up .ssh if we aren't in an ssh session
 if [ -z "$SSH_CLIENT" ] && [ -z "$SSH_TTY" ]; then
+  if [ -d "$HOME/.ssh" ] && [ ! -L "$HOME/.ssh" ]; then
+    echo "$HOME/.ssh is a directory, not a symlink. Please remove it and try again." 1>&2
+    exit 1
+  fi
   rm -f "$HOME/.ssh"
   ln -s "$HOME/.dotfiles/ssh" "$HOME/.ssh"
   mkdir -p ~/.ssh/ctl

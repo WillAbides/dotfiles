@@ -14,7 +14,7 @@ export USER
 
 CPUCOUNT=1
 MAKEFLAGS=
-if type getconf >/dev/null; then
+if type getconf >/dev/null 2>&1; then
   CPUCOUNT=$(getconf _NPROCESSORS_ONLN)
   MAKEFLAGS="-j$CPUCOUNT"
 fi
@@ -30,7 +30,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
   export HUBOT_GITHUB_TOKEN="$GITHUB_TOKEN"
 fi
 
-if which rbenv >/dev/null; then
+if command -v rbenv >/dev/null 2>&1; then
   eval "$(rbenv init -)"
 fi
 

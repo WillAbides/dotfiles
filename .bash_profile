@@ -5,28 +5,8 @@
 # shellcheck source=.shprofile
 source ~/.shprofile
 
-# check if this is a login and/or interactive shell
-[ "$0" = "-bash" ] && export LOGIN_BASH="1"
-echo "$-" | grep -q "i" && export INTERACTIVE_BASH="1"
-
-# run bashrc if this is a login, interactive shell
-if [ -n "$LOGIN_BASH" ] && [ -n "$INTERACTIVE_BASH" ]; then
-  # shellcheck source=.bashrc
-  source ~/.bashrc
-fi
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-# Enable history appending instead of overwriting.
-shopt -s histappend
-
-# Save multiline commands
-shopt -s cmdhist
-
-# Correct minor directory changing spelling mistakes
-shopt -s cdspell
+# shopts
+shopt -s checkwinsize histappend cmdhist cdspell
 
 # Bash completion
 # shellcheck source=/dev/null
@@ -39,28 +19,17 @@ fi
 
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
-# List directory contents
-alias sl=ls
-alias ls='ls -G'
-alias la='ls -AF'
-alias ll='ls -al'
-alias l='ls -a'
-alias l1='ls -1'
-alias lh='ll -htr'
+# Cargo (guarded)
+# shellcheck source=/dev/null
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-alias ghcop='bin/rubocop $(git ls-files --modified)'
-
+# Self-completing tools
 for self_complete in bindown octo; do
-  if which "$self_complete" >/dev/null; then
-    complete -C "$(which "$self_complete")" "$self_complete"
+  if command -v "$self_complete" >/dev/null 2>&1; then
+    complete -C "$(command -v "$self_complete")" "$self_complete"
   fi
 done
 
-. "$HOME/.cargo/env"
-
-export STARSHIP_CONFIG="$HOME/dotfiles/starship.toml"
-eval "$(starship init bash)"
-
-# if [ -f ~/.bashrc ]; then
-#   source ~/.bashrc
-# fi
+# Source interactive config
+# shellcheck source=.bashrc
+source ~/.bashrc
